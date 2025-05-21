@@ -1,0 +1,4 @@
+
+![](img/module10.png)
+
+After adding the extra log line immediately after spawner.spawn, the console shows “Experiment 1.2: Spawned the timer task, now moving on without blocking.” before anything else, right after “hey hey.” That proves that spawning a future simply queues it, it doesn’t execute or block at spawn time. Only when executor.run() is called does the executor pull the task off the channel and start polling it, which is why we then see “syifa’s computer : howdy!” followed by the two-second pause of the TimerFuture and finally “syifa’s computer : done!”. Capturing this sequence confirms the cooperative, non-blocking nature of our simple single-threaded executor, we can register tasks eagerly but control exactly when they run. This makes the overall flow easy to reason about and keeps the main thread free until we explicitly drive the futures to completion.
